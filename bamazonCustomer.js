@@ -1,23 +1,28 @@
-require("dotenv").config();
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 
 
-// create the connection information for the sql database (via .env)
+// create the connection information for the sql database, please provide your own:
+// host:
+// port:
+// user:
+// password:
+// database: "bamazon_db" (bamazonSchema.sql) contains the schema for this database.
+
 var connection = mysql.createConnection({
   host: "localhost",
   port: 3306,
   // Your username
   user: "root",
   // Your password
-  password: "",
+  password: "Bacon111",
   database: "bamazon_db"
 });
 
 // connect to the mysql server and sql database
 connection.connect(function (err) {
   if (err) throw err;
-  console.log("connected");
+  console.log("Welcome to Bamazon");
   listProducts();
 });
 
@@ -52,10 +57,11 @@ function listProducts() {
         connection.query("SELECT item_id, product_name, department_name, price, stock_quantity FROM products WHERE?", { item_id: answer.item_id }, function (err, res) {
           for (var i = 0; i < res.length; i++)
             if (res[i].stock_quantity >= answer.quantity) {
-              console.log("yay");
+              
+              console.log("There is sufficient stock to fill this order" );
             }
             else {
-              console.log("Insufficient stock for this Item");
+              console.log("Insufficient stock, order cannot be completed, please try again");
 
             }
             
